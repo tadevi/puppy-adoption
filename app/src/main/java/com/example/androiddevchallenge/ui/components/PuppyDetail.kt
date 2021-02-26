@@ -17,11 +17,8 @@ package com.example.androiddevchallenge.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Card
@@ -48,101 +45,106 @@ import com.example.androiddevchallenge.ui.theme.purple700
 
 @Composable
 fun PuppyDetail(data: PuppyModel) {
-    ConstraintLayout(
-        modifier = Modifier
-            .background(Color.White)
-            .fillMaxSize()
-    ) {
-        val (avatar, card, description, button) = createRefs()
-        Image(
-            modifier = Modifier
-                .constrainAs(avatar) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-                .fillMaxWidth()
-                .fillMaxHeight(0.5f),
-            contentScale = ContentScale.Crop,
-            bitmap = ImageBitmap.imageResource(data.imgResource),
-            contentDescription = null
-        )
+    LazyColumn {
+        item {
+            ConstraintLayout(
+                modifier = Modifier
+                    .background(Color.White)
+                    .padding(bottom = 8.dp)
+                    .fillMaxSize()
+            ) {
+                val (avatar, card, description, button) = createRefs()
+                Image(
+                    modifier = Modifier
+                        .constrainAs(avatar) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        }
+                        .fillMaxWidth()
+                        .aspectRatio(1f),
+                    contentScale = ContentScale.Crop,
+                    bitmap = ImageBitmap.imageResource(data.imgResource),
+                    contentDescription = null
+                )
 
-        Card(
-            shape = RoundedCornerShape(12.dp),
-            modifier = Modifier
-                .constrainAs(card) {
-                    top.linkTo(avatar.bottom)
-                    bottom.linkTo(avatar.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
+                Card(
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier
+                        .constrainAs(card) {
+                            top.linkTo(avatar.bottom)
+                            bottom.linkTo(avatar.bottom)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        }
+                        .fillMaxWidth(0.8f)
+                ) {
+                    Column(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 12.dp),
+                            style = TextStyle(fontWeight = FontWeight.Bold),
+                            text = data.name,
+                            fontSize = 20.sp,
+                            color = purple700,
+                            textAlign = TextAlign.Center
+                        )
+
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "${data.years} years old",
+                            color = Color.DarkGray,
+                            fontSize = 14.sp,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = data.gender,
+                            color = Color.DarkGray,
+                            fontSize = 14.sp,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = data.address,
+                            color = Color.DarkGray,
+                            fontSize = 14.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
-                .fillMaxWidth(0.8f)
-        ) {
-            Column(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
+
                 Text(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 12.dp),
-                    style = TextStyle(fontWeight = FontWeight.Bold),
-                    text = data.name,
-                    fontSize = 20.sp,
-                    color = purple700,
-                    textAlign = TextAlign.Center
+                        .constrainAs(description) {
+                            top.linkTo(card.bottom, margin = 8.dp)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        }
+                        .padding(start = 12.dp, end = 12.dp)
+                        .fillMaxWidth(),
+                    text = stringResource(R.string.txt_lorem),
+                    color = Color.DarkGray,
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Justify
                 )
 
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = "${data.years} years old",
-                    color = Color.DarkGray,
-                    fontSize = 14.sp,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = data.gender,
-                    color = Color.DarkGray,
-                    fontSize = 14.sp,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = data.address,
-                    color = Color.DarkGray,
-                    fontSize = 14.sp,
-                    textAlign = TextAlign.Center
-                )
+                Button(
+                    onClick = {},
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier
+                        .background(purple200)
+                        .constrainAs(button) {
+                            top.linkTo(description.bottom, margin = 16.dp)
+                            end.linkTo(parent.end)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        }
+                ) {
+                    Text(text = "Adoption")
+                }
             }
-        }
-
-        Text(
-            modifier = Modifier
-                .constrainAs(description) {
-                    top.linkTo(card.bottom, margin = 8.dp)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-                .padding(start = 12.dp, end = 12.dp)
-                .fillMaxWidth(),
-            text = stringResource(R.string.txt_lorem),
-            color = Color.DarkGray,
-            fontSize = 16.sp,
-            textAlign = TextAlign.Justify
-        )
-
-        Button(
-            onClick = {},
-            shape = RoundedCornerShape(8.dp),
-            modifier = Modifier
-                .background(purple200)
-                .constrainAs(button) {
-                    top.linkTo(description.bottom, margin = 16.dp)
-                    end.linkTo(parent.end)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-        ) {
-            Text(text = "Adoption")
         }
     }
 }
